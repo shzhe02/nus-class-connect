@@ -1,0 +1,36 @@
+/* Homepage.css */
+
+.Homepage-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+  
+  .Homepage-title {
+    font-size: 24px;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 20px;
+  }
+  
+  .Homepage-content {
+    font-size: 16px;
+    line-height: 1.6;
+    color: #666;
+  }
+  
+  .Homepage-link {
+    display: inline-block;
+    margin-top: 20px;
+    padding: 10px 20px;
+    background-color: #61dafb;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+  }
+  
+  .Homepage-link:hover {
+    background-color: #4aa9db;
+  }
+  
