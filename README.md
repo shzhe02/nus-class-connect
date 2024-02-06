@@ -24,7 +24,7 @@ git clone https://github.com/PallonCX/nus-class-connect.git
 2. After cloning, navigate into the project directory using the following commands:
 
 ```bash
-cd ph-mock-website-demo
+cd nus-class-connect
 ```
 
 ## Making Changes
