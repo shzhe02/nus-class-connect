@@ -18,7 +18,7 @@ Make sure you have the following installed:
 1. Open your IDE's terminal and navigate to a suitable folder. Then, run the following command to clone the repository:
 
 ```bash
-git clone [https://github.com/chin-herng/ph-mock-website-demo.git](https://github.com/PallonCX/nus-class-connect.git)
+git clone https://github.com/PallonCX/nus-class-connect.git
 ```
 
 2. After cloning, navigate into the project directory using the following commands:
