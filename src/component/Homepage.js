@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom'; // Import Link from React Router
 import './Homepage.css';
 import Timetable from './Timetable';
+import SearchBar from './SearchBar';
+import AddedCoursesPanel from './AddedCoursesPanel';
 
 function Homepage() {
   // State to store added courses
@@ -11,33 +14,22 @@ function Homepage() {
     setCourses([...courses, course]);
   };
 
+  // Function to handle searching for courses
+  const handleSearch = (searchQuery) => {
+    // Implement search functionality here
+    console.log("Search query:", searchQuery);
+  };
+
   return (
     <div className="Homepage-container">
-
-      {/* Timetable frame */}
+      <header className="Homepage-header">
+        <h1>Welcome to the Timetable Homepage</h1>
+        <Link to="/signup" className="Profile-link">Sign Up</Link> {/* Link to sign-up page */}
+      </header>
       <div className="Timetable-frame">
-
-        {/* Timetable component */}
         <Timetable />
-
-        {/* Search bar to add more courses */}
-        <input
-          type="text"
-          placeholder="Search for courses..."
-          // You can handle searching functionality here
-        />
-        {/* Button to add course */}
-        <button onClick={() => handleAddCourse("New Course")}>Add Course</button>
-        
-        {/* Panel to show added courses */}
-        <div className="Added-courses-panel">
-          <h2>Added Courses</h2>
-          <ul>
-            {courses.map((course, index) => (
-              <li key={index}>{course}</li>
-            ))}
-          </ul>
-        </div>
+        <SearchBar onSearch={handleSearch} onAddCourse={handleAddCourse} />
+        <AddedCoursesPanel courses={courses} />
       </div>
     </div>
   );

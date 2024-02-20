@@ -1,0 +1,22 @@
+.Added-courses-panel {
+    margin-top: 20px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 20px;
+  }
+  
+  .Added-courses-panel h2 {
+    margin-bottom: 10px;
+    color: #333;
+  }
+  
+  .Added-courses-panel ul {
+    list-style-type: none;
+    padding: 0;
+  }
+  
+  .Added-courses-panel li {
+    margin-bottom: 5px;
+    color: #666;
+  }
+  

@@ -1,40 +1,26 @@
 .Timetable-frame {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin-top: 20px;
-  }
-  
-  .Timetable {
-    margin-top: 20px;
-  }
-  
-  .Timetable table {
-    border-collapse: collapse;
-    width: 100%;
-  }
-  
-  .Timetable th,
-  .Timetable td {
-    border: 1px solid #ddd;
-    padding: 8px;
-    text-align: center;
-  }
-  
-  .Timetable th {
-    background-color: #f2f2f2;
-  }
-  
-  .Added-courses-panel {
-    margin-top: 20px;
-  }
-  
-  .Added-courses-panel ul {
-    list-style-type: none;
-    padding: 0;
-  }
-  
-  .Added-courses-panel li {
-    margin-bottom: 5px;
-  }
-  
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 20px;
+}
+
+.Timetable {
+  width: 100%; /* Set timetable width to 100% */
+}
+
+.Timetable table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+.Timetable th,
+.Timetable td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: center;
+}
+
+.Timetable th {
+  background-color: #f2f2f2;
+}

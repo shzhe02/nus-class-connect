@@ -1,36 +1,47 @@
-/* Homepage.css */
+.Timetable-frame {
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 20px;
+  margin-bottom: 20px; /* Add margin-bottom to create space below the timetable */
+}
 
-.Homepage-container {
-    max-width: 800px;
-    margin: 0 auto;
-    padding: 20px;
-  }
-  
-  .Homepage-title {
-    font-size: 24px;
-    font-weight: bold;
-    color: #333;
-    margin-bottom: 20px;
-  }
-  
-  .Homepage-content {
-    font-size: 16px;
-    line-height: 1.6;
-    color: #666;
-  }
-  
-  .Homepage-link {
-    display: inline-block;
-    margin-top: 20px;
-    padding: 10px 20px;
-    background-color: #61dafb;
-    color: #fff;
-    text-decoration: none;
-    border-radius: 5px;
-    transition: background-color 0.3s ease;
-  }
-  
-  .Homepage-link:hover {
-    background-color: #4aa9db;
-  }
-  
+.SearchBar {
+  margin-bottom: 20px; /* Add margin-bottom to create space below the search bar */
+}
+
+.Added-courses-panel {
+  margin-top: 20px;
+}
+
+.Added-courses-panel h2 {
+  margin-bottom: 10px;
+}
+
+.Added-courses-panel ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.Added-courses-panel li {
+  margin-bottom: 5px;
+}
+
+.Homepage-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.Profile-button {
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  padding: 8px 16px;
+  cursor: pointer;
+}
+
+.Profile-button:hover {
+  background-color: #0056b3;
+}
