@@ -1,5 +1,6 @@
 .SearchBar {
-  position: relative; /* Make the parent container of the dropdown relative */
+  position: relative;
+  /* Make the parent container of the dropdown relative */
   display: flex;
   align-items: center;
 }
@@ -25,23 +26,35 @@
 }
 
 .SearchBar-dropdown {
-  position: absolute; /* Position the dropdown absolutely */
-  top: 100%; /* Position the dropdown below the input */
-  left: 0; /* Align the dropdown with the input */
-  z-index: 1; /* Ensure the dropdown appears above other elements */
-  background-color: #fff; /* Set background color */
-  border: 1px solid #ccc; /* Add border */
-  border-radius: 4px; /* Add border radius */
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Add shadow */
-  max-height: 200px; /* Limit the height of the dropdown */
-  overflow-y: auto; /* Enable vertical scrolling if needed */
+  position: absolute;
+  /* Position the dropdown absolutely */
+  top: 100%;
+  /* Position the dropdown below the input */
+  left: 0;
+  /* Align the dropdown with the input */
+  z-index: 1;
+  /* Ensure the dropdown appears above other elements */
+  background-color: #fff;
+  /* Set background color */
+  border: 1px solid #ccc;
+  /* Add border */
+  border-radius: 4px;
+  /* Add border radius */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  /* Add shadow */
+  max-height: 200px;
+  /* Limit the height of the dropdown */
+  overflow-y: auto;
+  /* Enable vertical scrolling if needed */
 }
 
 .SearchBar-dropdown div {
-  padding: 8px; /* Add padding to dropdown items */
-  cursor: pointer; /* Change cursor to pointer */
+  padding: 8px;
+  /* Add padding to dropdown items */
+  cursor: pointer;
+  /* Change cursor to pointer */
 }
 
-.SearchBar-dropdown div:hover {
-  background-color: #f0f0f0; /* Change background color on hover */
+.SearchBar-dropdown-selected {
+  background-color: #f0f0f0;
 }
