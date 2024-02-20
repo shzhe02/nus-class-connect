@@ -6,7 +6,7 @@ function SearchBar({ onSearch, onAddCourse }) {
   const [searchQuery, setSearchQuery] = useState("");
   const [courseOptions, setCourseOptions] = useState([]);
   const [filteredOptions, setFilteredOptions] = useState([]);
-  const [isFocused, setIsFocused] = useState(false);
+  // const [isFocused, setIsFocused] = useState(false);
   const [selectedOptionIndex, setSelectedOptionIndex] = useState(0); // Track selected option index
 
   useEffect(() => {
@@ -28,11 +28,12 @@ function SearchBar({ onSearch, onAddCourse }) {
 
 
   const handleInputFocus = () => {
-    setIsFocused(true);
+    setSelectedOptionIndex(0);
+    // setIsFocused(true);
   };
 
   const handleInputBlur = () => {
-    setIsFocused(false);
+    // setIsFocused(false);
   };
 
   const handleKeyDown = (e) => {
@@ -57,12 +58,21 @@ function SearchBar({ onSearch, onAddCourse }) {
     }
   };
   
+  const handleSelect = () => {
+    setSelectedOptionIndex(0);
+  };
 
   const handleOptionClick = (index) => {
     setSelectedOptionIndex(index);
-    setSearchQuery(filteredOptions[index]);
+    setSearchQuery("");
+    onAddCourse(filteredOptions[index]);
   };
 
+  const handleMouseEnter = (index) => {
+    setSelectedOptionIndex(index);
+  };
+
+ 
   return (
     <div className="SearchBar">
       <input
@@ -73,15 +83,17 @@ function SearchBar({ onSearch, onAddCourse }) {
         onFocus={handleInputFocus}
         onBlur={handleInputBlur}
         onKeyDown={handleKeyDown}
+        onSelect={handleSelect}
         className="SearchBar-input" // Apply styling class
       />
-      {isFocused && searchQuery && (
+      {searchQuery && (
         <div className="SearchBar-dropdown">
           {filteredOptions.map((option, index) => (
             <div
               key={index}
+              onMouseEnter={() => handleMouseEnter(index)}
               onClick={() => handleOptionClick(index)}
-              className={index === selectedOptionIndex ? "selected" : ""}
+              className={index === selectedOptionIndex ? "SearchBar-dropdown-selected" : ""}
             >
               {option}
             </div>
