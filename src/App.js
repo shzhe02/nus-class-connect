@@ -6,9 +6,7 @@ import Homepage from './component/Homepage'; // Correcting the path to Homepage.
 function App() {
   return (
     <div>
-      <header>
-        <Homepage /> {/* Render the Homepage component */}
-      </header>
+      <Homepage /> {/* Render the Homepage component */}
     </div>
   );
 }
