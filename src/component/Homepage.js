@@ -20,10 +20,20 @@ function Homepage() {
     console.log("Search query:", searchQuery);
   };
 
+  // Function to get the current week of the year
+  const getCurrentWeekOfYear = () => {
+    const now = new Date();
+    const startOfYear = new Date(now.getFullYear(), 0, 0);
+    const diff = now - startOfYear;
+    const oneWeek = 1000 * 60 * 60 * 24 * 7;
+    const weekOfYear = Math.floor(diff / oneWeek);
+    return weekOfYear;
+  };
+
   return (
     <div className="Homepage-container">
       <header className="Homepage-header">
-        <h1>Welcome to the Timetable Homepage</h1>
+        <p>Week {getCurrentWeekOfYear()} of the year</p>
         <Link to="/signup" className="Profile-link">Sign Up</Link> {/* Link to sign-up page */}
       </header>
       <div className="Timetable-frame">

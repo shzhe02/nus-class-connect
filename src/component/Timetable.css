@@ -7,6 +7,7 @@
 
 .Timetable {
   width: 100%; /* Set timetable width to 100% */
+  border-radius: 8px; /* Apply rounded corners directly to the Timetable */
 }
 
 .Timetable table {

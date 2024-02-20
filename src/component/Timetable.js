@@ -3,16 +3,16 @@ import './Timetable.css';
 
 function Timetable() {
   return (
-    <div className="Timetable">
+    <div className="Timetable"> {/* Apply rounded-corners class */}
       <table>
         <thead>
           <tr>
             <th>Time</th>
-            <th>Monday</th>
-            <th>Tuesday</th>
-            <th>Wednesday</th>
-            <th>Thursday</th>
-            <th>Friday</th>
+            <th>MON</th>
+            <th>TUE</th>
+            <th>WED</th>
+            <th>THU</th>
+            <th>FRI</th>
           </tr>
         </thead>
         <tbody>
