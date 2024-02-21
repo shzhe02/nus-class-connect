@@ -7,16 +7,15 @@
 
 .Timetable {
   width: 100%; /* Set timetable width to 100% */
-  border-radius: 8px; /* Apply rounded corners directly to the Timetable */
 }
 
 .Timetable table {
-  border-collapse: collapse;
   width: 100%;
+  border-spacing: 0;
 }
 
 .Timetable th,
-.Timetable td {
+td {
   border: 1px solid #ddd;
   padding: 8px;
   text-align: center;
@@ -24,4 +23,20 @@
 
 .Timetable th {
   background-color: #f2f2f2;
+}
+
+.Timetable table tr:last-child td:first-child {
+  border-bottom-left-radius: 10px;
+}
+
+.Timetable table tr:last-child td:last-child {
+  border-bottom-right-radius: 10px;
+}
+
+.Timetable table thead tr th:first-child {
+  border-top-left-radius: 10px;
+}
+
+.Timetable table thead tr th:last-child {
+  border-top-right-radius: 10px;
 }
