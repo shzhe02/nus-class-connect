@@ -1,17 +1,31 @@
-import React, { useState, useEffect } from 'react';
-import courseData from '../extracted_modules.json'; // Import JSON data containing course information
-import './SearchBar.css'; // Import CSS file for styling
+import React, { useState, useEffect, useRef } from 'react';
+import courseData from '../extracted_modules.json';
+import './SearchBar.css';
 
 function SearchBar({ onSearch, onAddCourse }) {
   const [searchQuery, setSearchQuery] = useState("");
   const [courseOptions, setCourseOptions] = useState([]);
   const [filteredOptions, setFilteredOptions] = useState([]);
-  // const [isFocused, setIsFocused] = useState(false);
-  const [selectedOptionIndex, setSelectedOptionIndex] = useState(0); // Track selected option index
+  const [selectedOptionIndex, setSelectedOptionIndex] = useState(0);
+  const dropdownRef = useRef(null);
 
   useEffect(() => {
     // Extract course options from the imported JSON file
     setCourseOptions(courseData.map(course => course.courseName));
+  }, []);
+
+  useEffect(() => {
+    // Function to close dropdown when clicking outside the SearchBar
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setFilteredOptions([]); // Close dropdown
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
   }, []);
 
   const handleSearchChange = (e) => {
@@ -87,7 +101,7 @@ function SearchBar({ onSearch, onAddCourse }) {
         className="SearchBar-input" // Apply styling class
       />
       {searchQuery && (
-        <div className="SearchBar-dropdown">
+        <div ref={dropdownRef} className="SearchBar-dropdown">
           {filteredOptions.map((option, index) => (
             <div
               key={index}
