@@ -1,0 +1,19 @@
+.Footer {
+    background-color: #f0f0f0;
+    padding: 20px;
+    text-align: center;
+  }
+  
+  .NUSMODS-link {
+    color: orange; /* Set link color to orange */
+    text-decoration: none; /* Remove underline */
+  }
+  
+  .NUSMODS-link:visited {
+    color: orange; /* Keep the same color after access */
+  }
+  
+  .NUSMODS-link:hover,
+  .NUSMODS-link:focus {
+    text-decoration: none; /* Remove underline on hover/focus */
+  }

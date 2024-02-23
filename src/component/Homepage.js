@@ -4,6 +4,7 @@ import './Homepage.css';
 import Timetable from './Timetable';
 import SearchBar from './SearchBar';
 import AddedCoursesPanel from './AddedCoursesPanel';
+import Footer from './Footer';
 
 function Homepage() {
   // State to store added courses
@@ -48,6 +49,7 @@ function Homepage() {
         <SearchBar onSearch={handleSearch} onAddCourse={handleAddCourse} />
         <AddedCoursesPanel courses={courses} onDeleteCourse={handleDeleteCourse} />
       </div>
+      <Footer />
     </div>
   );
 }

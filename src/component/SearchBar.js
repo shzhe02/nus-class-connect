@@ -40,7 +40,6 @@ function SearchBar({ onSearch, onAddCourse }) {
     setFilteredOptions(filtered);
   };
 
-
   const handleInputFocus = () => {
     setSelectedOptionIndex(0);
     // setIsFocused(true);
