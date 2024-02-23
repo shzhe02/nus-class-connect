@@ -14,6 +14,13 @@ function Homepage() {
     setCourses([...courses, course]);
   };
 
+  // Function to handle deleting a course
+  const handleDeleteCourse = (index) => {
+    const newCourses = [...courses];
+    newCourses.splice(index, 1);
+    setCourses(newCourses);
+  };
+
   // Function to handle searching for courses
   const handleSearch = (searchQuery) => {
     // Implement search functionality here
@@ -39,7 +46,7 @@ function Homepage() {
       <div className="Timetable-frame">
         <Timetable />
         <SearchBar onSearch={handleSearch} onAddCourse={handleAddCourse} />
-        <AddedCoursesPanel courses={courses} />
+        <AddedCoursesPanel courses={courses} onDeleteCourse={handleDeleteCourse} />
       </div>
     </div>
   );

@@ -1,22 +1,37 @@
 .Added-courses-panel {
-    margin-top: 20px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    padding: 20px;
-  }
-  
-  .Added-courses-panel h2 {
-    margin-bottom: 10px;
-    color: #333;
-  }
-  
-  .Added-courses-panel ul {
-    list-style-type: none;
-    padding: 0;
-  }
-  
-  .Added-courses-panel li {
-    margin-bottom: 5px;
-    color: #666;
-  }
-  
+  width: calc(100% - 250px);
+  margin-top: 20px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 20px;
+}
+
+.Added-courses-panel ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.Added-courses-panel li {
+  width: calc(33.33% - 20px); /* Adjust the width as needed */
+  margin-right: 20px; /* Adjust the margin between items */
+  margin-bottom: 20px; /* Adjust the margin between rows */
+  display: flex; /* Use flexbox to control layout */
+  align-items: center; /* Center align items vertically */
+  color: #666;
+  background-color: #f0f0f0;
+  border-radius: 4px;
+  padding: 10px;
+  box-sizing: border-box;
+}
+
+.course-name {
+  flex-grow: 1; /* Allow the course name to take up remaining space */
+  overflow-wrap: break-word; /* Allow text wrapping */
+}
+
+.delete-icon {
+  cursor: pointer;
+}

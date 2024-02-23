@@ -1,13 +1,20 @@
 import React from 'react';
-import './AddedCoursesPanel.css'; // Import CSS file for styling
+import { FaTrash } from 'react-icons/fa';
+import './AddedCoursesPanel.css';
 
-function AddedCoursesPanel({ courses }) {
+function AddedCoursesPanel({ courses, onDeleteCourse }) {
+  const handleDelete = (index) => {
+    onDeleteCourse(index);
+  };
+
   return (
     <div className="Added-courses-panel">
-      <h2>Added Courses</h2>
       <ul>
         {courses.map((course, index) => (
-          <li key={index}>{course}</li>
+          <li key={index}>
+            <span className="course-name">{course}</span>
+            <FaTrash onClick={() => handleDelete(index)} className="delete-icon" />
+          </li>
         ))}
       </ul>
     </div>
