@@ -1,29 +1,29 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom'; // Import Link from React Router
+import { Link } from 'react-router-dom';
 import './Homepage.css';
-import Timetable from './Timetable';
-import SearchBar from './SearchBar';
-import AddedCoursesPanel from './AddedCoursesPanel';
-import Footer from './Footer';
+import Timetable from '@components/Timetable';
+import SearchBar from '@components/SearchBar';
+import AddedCoursesPanel from '@components/AddedCoursesPanel';
+import Footer from '@components/Footer';
 
-function Homepage() {
+const Homepage: React.FC = () => {
   // State to store added courses
-  const [courses, setCourses] = useState([]);
+  const [courses, setCourses] = useState<string[]>([]);
 
   // Function to handle adding a new course
-  const handleAddCourse = (course) => {
+  const handleAddCourse = (course: string) => {
     setCourses([...courses, course]);
   };
 
   // Function to handle deleting a course
-  const handleDeleteCourse = (index) => {
+  const handleDeleteCourse = (index: number) => {
     const newCourses = [...courses];
     newCourses.splice(index, 1);
     setCourses(newCourses);
   };
 
   // Function to handle searching for courses
-  const handleSearch = (searchQuery) => {
+  const handleSearch = (searchQuery: string) => {
     // Implement search functionality here
     console.log("Search query:", searchQuery);
   };
@@ -32,7 +32,7 @@ function Homepage() {
   const getCurrentWeekOfYear = () => {
     const now = new Date();
     const startOfYear = new Date(now.getFullYear(), 0, 0);
-    const diff = now - startOfYear;
+    const diff = now.getTime() - startOfYear.getTime();
     const oneWeek = 1000 * 60 * 60 * 24 * 7;
     const weekOfYear = Math.floor(diff / oneWeek);
     return weekOfYear;

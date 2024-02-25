@@ -3,7 +3,7 @@ import './Timetable.css';
 
 function Timetable() {
   return (
-    <div className="Timetable"> {/* Apply rounded-corners class */}
+    <div className='Timetable'>
       <table>
         <thead>
           <tr>
