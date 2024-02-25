@@ -13,14 +13,14 @@ function SignUp() {
     e.preventDefault();
     // Implement sign-up or login logic here based on the current mode
     if (isSignUp) {
-      console.log("Sign Up");
-      console.log("Email:", email);
-      console.log("Password:", password);
-      console.log("Confirm Password:", confirmPassword);
+      console.log('Sign Up');
+      console.log('Email:', email);
+      console.log('Password:', password);
+      console.log('Confirm Password:', confirmPassword);
     } else {
-      console.log("Login");
-      console.log("Email:", email);
-      console.log("Password:", password);
+      console.log('Login');
+      console.log('Email:', email);
+      console.log('Password:', password);
     }
     // Reset form fields after submission
     setEmail('');
@@ -34,46 +34,32 @@ function SignUp() {
   };
 
   return (
-    <div className="SignUp-container">
+    <div className='SignUp-container'>
       <h2>{isSignUp ? 'Sign Up' : 'Login'}</h2>
       <form onSubmit={handleSubmit}>
-        <div className="form-group">
-          <label htmlFor="email">Email:</label>
-          <input
-            type="email"
-            id="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
+        <div className='form-group'>
+          <label htmlFor='email'>Email:</label>
+          <input type='email' id='email' value={email} onChange={e => setEmail(e.target.value)} required />
         </div>
-        <div className="form-group">
-          <label htmlFor="password">Password:</label>
-          <input
-            type="password"
-            id="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
+        <div className='form-group'>
+          <label htmlFor='password'>Password:</label>
+          <input type='password' id='password' value={password} onChange={e => setPassword(e.target.value)} required />
         </div>
         {isSignUp && (
-          <div className="form-group">
-            <label htmlFor="confirmPassword">Confirm Password:</label>
+          <div className='form-group'>
+            <label htmlFor='confirmPassword'>Confirm Password:</label>
             <input
-              type="password"
-              id="confirmPassword"
+              type='password'
+              id='confirmPassword'
               value={confirmPassword}
-              onChange={(e) => setConfirmPassword(e.target.value)}
+              onChange={e => setConfirmPassword(e.target.value)}
               required
             />
           </div>
         )}
-        <button type="submit">{isSignUp ? 'Sign Up' : 'Login'}</button>
+        <button type='submit'>{isSignUp ? 'Sign Up' : 'Login'}</button>
       </form>
-      <button onClick={handleModeSwitch}>
-        {isSignUp ? 'Switch to Login' : 'Switch to Sign Up'}
-      </button>
+      <button onClick={handleModeSwitch}>{isSignUp ? 'Switch to Login' : 'Switch to Sign Up'}</button>
     </div>
   );
 }

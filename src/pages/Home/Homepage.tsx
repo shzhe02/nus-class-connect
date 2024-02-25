@@ -25,7 +25,7 @@ const Homepage: React.FC = () => {
   // Function to handle searching for courses
   const handleSearch = (searchQuery: string) => {
     // Implement search functionality here
-    console.log("Search query:", searchQuery);
+    console.log('Search query:', searchQuery);
   };
 
   // Function to get the current week of the year
@@ -39,12 +39,15 @@ const Homepage: React.FC = () => {
   };
 
   return (
-    <div className="Homepage-container">
-      <header className="Homepage-header">
+    <div className='Homepage-container'>
+      <header className='Homepage-header'>
         <p>Week {getCurrentWeekOfYear()} of the year</p>
-        <Link to="/signup" className="Profile-link">Sign Up</Link> {/* Link to sign-up page */}
+        <Link to='/signup' className='Profile-link'>
+          Sign Up
+        </Link>{' '}
+        {/* Link to sign-up page */}
       </header>
-      <div className="Timetable-frame">
+      <div className='Timetable-frame'>
         <Timetable />
         <SearchBar onSearch={handleSearch} onAddCourse={handleAddCourse} />
         <AddedCoursesPanel courses={courses} onDeleteCourse={handleDeleteCourse} />
@@ -52,6 +55,6 @@ const Homepage: React.FC = () => {
       <Footer />
     </div>
   );
-}
+};
 
 export default Homepage;
