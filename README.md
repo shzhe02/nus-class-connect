@@ -47,13 +47,7 @@ git checkout -b my-feature-branch
 3. Run the following command to start the development server. This will launch your React application, and you can view it in your web browser at http://localhost:3000.
 
 ```bash
-npm start
-```
-
-If you encounter error regarding module not install, try the code below:
-
-```bash
-npm install react-scripts --save
+npm run start
 ```
 
 ### After making change
