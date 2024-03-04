@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Typography, Container, Grid, Box, Button } from '@mui/material';
+import { Container, Grid, Box, Button } from '@mui/material';
 import Timetable from '@components/Timetable';
 import SearchBar from '@components/SearchBar';
 import AddedCoursesPanel from '@components/AddedCoursesPanel';
@@ -28,20 +28,9 @@ const Homepage: React.FC = () => {
     console.log('Search query:', searchQuery);
   };
 
-  // Function to get the current week of the year
-  const getCurrentWeekOfYear = () => {
-    const now = new Date();
-    const startOfYear = new Date(now.getFullYear(), 0, 0);
-    const diff = now.getTime() - startOfYear.getTime();
-    const oneWeek = 1000 * 60 * 60 * 24 * 7;
-    const weekOfYear = Math.floor(diff / oneWeek);
-    return weekOfYear;
-  };
-
   return (
     <Container maxWidth='lg'>
       <Box marginTop={4} marginBottom={2} textAlign='center'>
-        <Typography variant='body1'>Week {getCurrentWeekOfYear()} of the year</Typography>
         <Button component={Link} to='/signup' variant='contained' color='primary' style={{ textDecoration: 'none', marginLeft: '10px' }}>
           Sign Up
         </Button>
@@ -50,10 +39,10 @@ const Homepage: React.FC = () => {
         <Grid item xs={12}>
           <Timetable />
         </Grid>
-        <Grid item xs={12} md={8}>
+        <Grid item xs={12}>
           <SearchBar onSearch={handleSearch} onAddCourse={handleAddCourse} />
         </Grid>
-        <Grid item xs={12} md={8}>
+        <Grid item xs={12}>
           <AddedCoursesPanel courses={courses} onDeleteCourse={handleDeleteCourse} />
         </Grid>
       </Grid>

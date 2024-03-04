@@ -1,6 +1,6 @@
 import React from 'react';
-import { FaTrash } from 'react-icons/fa';
-import './AddedCoursesPanel.css';
+import { Grid, List, ListItem, ListItemText, IconButton } from '@mui/material';
+import { Delete as DeleteIcon } from '@mui/icons-material';
 
 interface Props {
   courses: string[];
@@ -13,15 +13,23 @@ const AddedCoursesPanel: React.FC<Props> = ({ courses, onDeleteCourse }) => {
   };
 
   return (
-    <div className='Added-courses-panel'>
-      <ul>
+    <div>
+      <Grid container spacing={2}>
         {courses.map((course, index) => (
-          <li key={index}>
-            <span className='course-name'>{course}</span>
-            <FaTrash onClick={() => handleDelete(index)} className='delete-icon' />
-          </li>
+          <Grid item xs={4} key={index}>
+            {' '}
+            {/* Three columns, xs=4 for small screens */}
+            <List>
+              <ListItem>
+                <ListItemText primary={course} />
+                <IconButton onClick={() => handleDelete(index)}>
+                  <DeleteIcon />
+                </IconButton>
+              </ListItem>
+            </List>
+          </Grid>
         ))}
-      </ul>
+      </Grid>
     </div>
   );
 };

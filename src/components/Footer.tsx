@@ -1,18 +1,16 @@
 import React from 'react';
-import './Footer.css'; // Import CSS file for styling
+import { Typography, Link, Box } from '@mui/material';
 
 function Footer() {
   return (
-    <footer className='Footer'>
-      <p> Copyright © 2024 - Present, Pioneer House Programming Interest Group. All rights reserved. </p>
-      <p>
-        {' '}
-        Inspired by{' '}
-        <a href='https://nusmods.com/' className='NUSMODS-link'>
+    <Box mt={4} mb={2} textAlign='center'>
+      <Typography variant='body2' color='textSecondary'>
+        {'Copyright © 2024 - Present, Pioneer House Programming Interest Group. All rights reserved. '}
+        <Link href='https://nusmods.com/' color='inherit' underline='always'>
           <strong>@NUSMODS</strong>
-        </a>{' '}
-      </p>
-    </footer>
+        </Link>
+      </Typography>
+    </Box>
   );
 }
 
