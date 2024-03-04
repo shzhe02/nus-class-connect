@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef, KeyboardEvent } from 'react';
+import { TextField, List, ListItem, ListItemText, Paper } from '@mui/material';
 import courseData from '../utils/extracted_modules.json';
-import './SearchBar.css';
 
 interface SearchBarProps {
   onSearch: (query: string) => void;
@@ -23,7 +23,9 @@ function SearchBar({ onSearch, onAddCourse }: SearchBarProps) {
     // Function to close dropdown when clicking outside the SearchBar
     const handleClickOutside = (event: MouseEvent) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
-        setFilteredOptions([]); // Close dropdown
+        // Hide the dropdown by setting its height to 0
+        dropdownRef.current.style.maxHeight = '0px';
+        setFilteredOptions([]); // Clear filtered options
       }
     };
 
@@ -33,7 +35,37 @@ function SearchBar({ onSearch, onAddCourse }: SearchBarProps) {
     };
   }, []);
 
+  useEffect(() => {
+    // Reset selectedOptionIndex to 0 whenever the searchQuery changes
+    setSelectedOptionIndex(0);
+  }, [searchQuery]);
+
+  useEffect(() => {
+    // Scroll to the selected option if it's out of view
+    if (dropdownRef.current && selectedOptionIndex !== null) {
+      const listItemHeight = 48; // Height of each ListItem (adjust as needed)
+      const dropdownHeight = dropdownRef.current.clientHeight;
+      const scrollTop = listItemHeight * selectedOptionIndex;
+      const scrollBottom = scrollTop + listItemHeight;
+
+      // If the selected option is below the visible area, scroll down to make it visible
+      if (scrollBottom > dropdownRef.current.scrollTop + dropdownHeight) {
+        dropdownRef.current.scrollTop = scrollBottom - dropdownHeight;
+      }
+
+      // If the selected option is above the visible area, scroll up to make it visible
+      if (scrollTop < dropdownRef.current.scrollTop) {
+        dropdownRef.current.scrollTop = scrollTop;
+      }
+    }
+  }, [selectedOptionIndex]);
+
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (dropdownRef.current) {
+      // Reset the dropdown height to 200
+      dropdownRef.current.style.maxHeight = '200px';
+    }
+
     const query = e.target.value;
     setSearchQuery(query);
     onSearch(query);
@@ -41,15 +73,9 @@ function SearchBar({ onSearch, onAddCourse }: SearchBarProps) {
     // Filter course options based on the user input
     const filtered = courseOptions.filter(course => course.toLowerCase().startsWith(query.toLowerCase()));
     setFilteredOptions(filtered);
-  };
-
-  const handleInputFocus = () => {
-    setSelectedOptionIndex(0);
-    // setIsFocused(true);
-  };
-
-  const handleInputBlur = () => {
-    // setIsFocused(false);
+    if (dropdownRef.current && filtered.length === 0) {
+      dropdownRef.current.style.maxHeight = '0px';
+    }
   };
 
   const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
@@ -70,10 +96,6 @@ function SearchBar({ onSearch, onAddCourse }: SearchBarProps) {
     }
   };
 
-  const handleSelect = () => {
-    setSelectedOptionIndex(0);
-  };
-
   const handleOptionClick = (index: number) => {
     setSelectedOptionIndex(index);
     setSearchQuery('');
@@ -85,31 +107,46 @@ function SearchBar({ onSearch, onAddCourse }: SearchBarProps) {
   };
 
   return (
-    <div className='SearchBar'>
-      <input
-        type='text'
-        placeholder='Search for courses...'
+    <div>
+      <TextField
+        fullWidth
+        label='Search for courses...'
         value={searchQuery}
         onChange={handleSearchChange}
-        onFocus={handleInputFocus}
-        onBlur={handleInputBlur}
         onKeyDown={handleKeyDown}
-        onSelect={handleSelect}
-        className='SearchBar-input'
+        onFocus={() => {
+          if (dropdownRef.current) {
+            // Reset the dropdown height to 200
+            dropdownRef.current.style.maxHeight = '200px';
+          }
+
+          setSearchQuery(searchQuery);
+          onSearch(searchQuery);
+
+          // Filter course options based on the user input
+          const filtered = courseOptions.filter(course => course.toLowerCase().startsWith(searchQuery.toLowerCase()));
+          setFilteredOptions(filtered);
+          if (dropdownRef.current && filtered.length === 0) {
+            dropdownRef.current.style.maxHeight = '0px';
+          }
+        }}
       />
       {searchQuery && (
-        <div ref={dropdownRef} className='SearchBar-dropdown'>
-          {filteredOptions.map((option, index) => (
-            <div
-              key={index}
-              onMouseEnter={() => handleMouseEnter(index)}
-              onClick={() => handleOptionClick(index)}
-              className={index === selectedOptionIndex ? 'SearchBar-dropdown-selected' : ''}
-            >
-              {option}
-            </div>
-          ))}
-        </div>
+        <Paper ref={dropdownRef} style={{ maxHeight: '200px', overflowY: 'auto' }}>
+          <List>
+            {filteredOptions.map((option, index) => (
+              <ListItem
+                key={index}
+                button
+                selected={index === selectedOptionIndex}
+                onMouseEnter={() => handleMouseEnter(index)}
+                onClick={() => handleOptionClick(index)}
+              >
+                <ListItemText primary={option} />
+              </ListItem>
+            ))}
+          </List>
+        </Paper>
       )}
     </div>
   );

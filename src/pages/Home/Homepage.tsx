@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import './Homepage.css';
+import { Typography, Container, Grid, Box, Button } from '@mui/material';
 import Timetable from '@components/Timetable';
 import SearchBar from '@components/SearchBar';
 import AddedCoursesPanel from '@components/AddedCoursesPanel';
@@ -39,21 +39,26 @@ const Homepage: React.FC = () => {
   };
 
   return (
-    <div className='Homepage-container'>
-      <header className='Homepage-header'>
-        <p>Week {getCurrentWeekOfYear()} of the year</p>
-        <Link to='/signup' className='Profile-link'>
+    <Container maxWidth='lg'>
+      <Box marginTop={4} marginBottom={2} textAlign='center'>
+        <Typography variant='body1'>Week {getCurrentWeekOfYear()} of the year</Typography>
+        <Button component={Link} to='/signup' variant='contained' color='primary' style={{ textDecoration: 'none', marginLeft: '10px' }}>
           Sign Up
-        </Link>{' '}
-        {/* Link to sign-up page */}
-      </header>
-      <div className='Timetable-frame'>
-        <Timetable />
-        <SearchBar onSearch={handleSearch} onAddCourse={handleAddCourse} />
-        <AddedCoursesPanel courses={courses} onDeleteCourse={handleDeleteCourse} />
-      </div>
+        </Button>
+      </Box>
+      <Grid container spacing={2} justifyContent='center'>
+        <Grid item xs={12}>
+          <Timetable />
+        </Grid>
+        <Grid item xs={12} md={8}>
+          <SearchBar onSearch={handleSearch} onAddCourse={handleAddCourse} />
+        </Grid>
+        <Grid item xs={12} md={8}>
+          <AddedCoursesPanel courses={courses} onDeleteCourse={handleDeleteCourse} />
+        </Grid>
+      </Grid>
       <Footer />
-    </div>
+    </Container>
   );
 };
 

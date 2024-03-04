@@ -1,17 +1,15 @@
 import React, { useState, FormEvent } from 'react';
-import './SignUp.css'; // Import CSS file for styling
+import { Typography } from '@mui/material';
+import { Container, Form, FormField, StyledButton } from './SignUp.styles'; // Import styled components
 
 function SignUp() {
-  // State to track form inputs
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const [confirmPassword, setConfirmPassword] = useState<string>('');
-  const [isSignUp, setIsSignUp] = useState<boolean>(true); // State to track the current mode (sign up or login)
+  const [isSignUp, setIsSignUp] = useState<boolean>(true);
 
-  // Function to handle form submission
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    // Implement sign-up or login logic here based on the current mode
     if (isSignUp) {
       console.log('Sign Up');
       console.log('Email:', email);
@@ -22,45 +20,44 @@ function SignUp() {
       console.log('Email:', email);
       console.log('Password:', password);
     }
-    // Reset form fields after submission
     setEmail('');
     setPassword('');
     setConfirmPassword('');
   };
 
-  // Function to handle switching between sign up and login modes
   const handleModeSwitch = () => {
     setIsSignUp(!isSignUp);
   };
 
   return (
-    <div className='SignUp-container'>
-      <h2>{isSignUp ? 'Sign Up' : 'Login'}</h2>
-      <form onSubmit={handleSubmit}>
-        <div className='form-group'>
-          <label htmlFor='email'>Email:</label>
-          <input type='email' id='email' value={email} onChange={e => setEmail(e.target.value)} required />
-        </div>
-        <div className='form-group'>
-          <label htmlFor='password'>Password:</label>
-          <input type='password' id='password' value={password} onChange={e => setPassword(e.target.value)} required />
-        </div>
+    <Container>
+      <Typography variant='h4'>{isSignUp ? 'Sign Up' : 'Login'}</Typography>
+      <Form onSubmit={handleSubmit}>
+        <FormField label='Email' variant='outlined' value={email} onChange={e => setEmail(e.target.value)} required />
+        <FormField
+          label='Password'
+          type='password'
+          variant='outlined'
+          value={password}
+          onChange={e => setPassword(e.target.value)}
+          required
+        />
         {isSignUp && (
-          <div className='form-group'>
-            <label htmlFor='confirmPassword'>Confirm Password:</label>
-            <input
-              type='password'
-              id='confirmPassword'
-              value={confirmPassword}
-              onChange={e => setConfirmPassword(e.target.value)}
-              required
-            />
-          </div>
+          <FormField
+            label='Confirm Password'
+            type='password'
+            variant='outlined'
+            value={confirmPassword}
+            onChange={e => setConfirmPassword(e.target.value)}
+            required
+          />
         )}
-        <button type='submit'>{isSignUp ? 'Sign Up' : 'Login'}</button>
-      </form>
-      <button onClick={handleModeSwitch}>{isSignUp ? 'Switch to Login' : 'Switch to Sign Up'}</button>
-    </div>
+        <StyledButton variant='contained' type='submit'>
+          {isSignUp ? 'Sign Up' : 'Login'}
+        </StyledButton>
+      </Form>
+      <StyledButton onClick={handleModeSwitch}>{isSignUp ? 'Switch to Login' : 'Switch to Sign Up'}</StyledButton>
+    </Container>
   );
 }
 
