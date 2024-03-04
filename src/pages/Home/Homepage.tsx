@@ -5,14 +5,57 @@ import Timetable from '@components/Timetable';
 import SearchBar from '@components/SearchBar';
 import AddedCoursesPanel from '@components/AddedCoursesPanel';
 import Footer from '@components/Footer';
+import type { Course } from '../../types/Course';
+import type { ClassData } from '../../types/ClassData';
+
+const CURRENT_SEMESTER = 2;
 
 const Homepage: React.FC = () => {
-  // State to store added courses
-  const [courses, setCourses] = useState<string[]>([]);
+  // State to store added courses and their timetable data
+  const [courses, setCourses] = useState<Course[]>([]);
+
+  function abbreviateDay(fullDay: string): string {
+    switch (fullDay) {
+      case 'Monday':
+        return 'MON';
+      case 'Tuesday':
+        return 'TUE';
+      case 'Wednesday':
+        return 'WED';
+      case 'Thursday':
+        return 'THU';
+      case 'Friday':
+        return 'FRI';
+      case 'Saturday':
+        return 'SAT';
+      case 'Sunday':
+        return 'SUN';
+      default:
+        return '';
+    }
+  }
 
   // Function to handle adding a new course
   const handleAddCourse = (course: string) => {
-    setCourses([...courses, course]);
+    // Fetch timetable data for the added course and update the courses state
+    fetchTimetableData(course)
+      .then(data => {
+        // Map the fetched data to match the structure of the timetableData
+        const mappedData: ClassData[] = (data as Record<string, unknown>[]).map(item => ({
+          classNo: item.classNo as string,
+          startTime: item.startTime as string,
+          endTime: item.endTime as string,
+          weeks: item.weeks as number[],
+          venue: item.venue as string,
+          day: abbreviateDay(item.day as string),
+          lessonType: item.lessonType as string,
+        }));
+
+        setCourses([...courses, { courseName: course, timetableData: mappedData }]);
+      })
+      .catch(error => {
+        console.error('Error fetching timetable data:', error);
+      });
   };
 
   // Function to handle deleting a course
@@ -28,6 +71,30 @@ const Homepage: React.FC = () => {
     console.log('Search query:', searchQuery);
   };
 
+  // Function to fetch timetable data for a course
+  const fetchTimetableData = (course: string) => {
+    const courseCode = course.split(' ')[0]; // Assuming course code is the first part
+    return fetch(`https://api.nusmods.com/v2/2023-2024/modules/${courseCode}.json`)
+      .then(response => response.json())
+      .then(data => {
+        const semesterData = data?.semesterData;
+
+        // No semester data found
+        if (!semesterData || semesterData.length === 0) {
+          throw new Error('Semester data not found');
+        }
+
+        // Check if the current semester data exists
+        const currentSemesterData = semesterData.find((semester: { semester: number }) => semester.semester === CURRENT_SEMESTER);
+        if (!currentSemesterData) {
+          throw new Error('Semester data not found for the current semester');
+        }
+
+        // Return the current semester data
+        return currentSemesterData.timetable;
+      });
+  };
+
   return (
     <Container maxWidth='lg'>
       <Box marginTop={4} marginBottom={2} textAlign='center'>
@@ -37,7 +104,7 @@ const Homepage: React.FC = () => {
       </Box>
       <Grid container spacing={2} justifyContent='center'>
         <Grid item xs={12}>
-          <Timetable />
+          <Timetable courses={courses} />
         </Grid>
         <Grid item xs={12}>
           <SearchBar onSearch={handleSearch} onAddCourse={handleAddCourse} />

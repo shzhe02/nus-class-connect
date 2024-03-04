@@ -97,9 +97,10 @@ function SearchBar({ onSearch, onAddCourse }: SearchBarProps) {
   };
 
   const handleOptionClick = (index: number) => {
+    const selectedCourse = filteredOptions[index];
     setSelectedOptionIndex(index);
     setSearchQuery('');
-    onAddCourse(filteredOptions[index]);
+    onAddCourse(selectedCourse);
   };
 
   const handleMouseEnter = (index: number) => {
