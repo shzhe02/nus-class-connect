@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Container, Grid, Box, Button } from '@mui/material';
-import Timetable from '@components/Timetable';
+import Timetable from '@/components/Timetable';
 import SearchBar from '@components/SearchBar';
 import AddedCoursesPanel from '@components/AddedCoursesPanel';
 import Footer from '@components/Footer';

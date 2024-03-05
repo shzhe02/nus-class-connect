@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Table, TableHead, TableBody, TableRow, TableCell } from '@mui/material';
 import type { Course } from '../types/Course';
 import type { ClassData } from '../types/ClassData';
@@ -8,14 +8,14 @@ interface TimetableProps {
 }
 
 const Timetable: React.FC<TimetableProps> = ({ courses }) => {
-  // Define an array of days to iterate through
+  const [selectedCells, setSelectedCells] = useState<ClassData[]>([]);
+  const tableRef = useRef<HTMLDivElement>(null);
+
   const days = ['MON', 'TUE', 'WED', 'THU', 'FRI'];
 
-  // Define a function to group class data by lessonType
   const groupClassDataByLessonType = (timetableData: ClassData[]) => {
     const groupedData: { [lessonType: string]: [ClassData[], string] } = {};
 
-    // Iterate over each timetableData and group by lessonType
     timetableData.forEach(data => {
       const { lessonType } = data;
       if (!groupedData[lessonType]) {
@@ -28,13 +28,11 @@ const Timetable: React.FC<TimetableProps> = ({ courses }) => {
     return groupedData;
   };
 
-  // Call groupClassDataByLessonType for each course and store the results
   const groupedDataByCourse: { [courseName: string]: { [lessonType: string]: [ClassData[], string] } } = {};
   courses.forEach(course => {
     groupedDataByCourse[course.courseName] = groupClassDataByLessonType(course.timetableData);
   });
 
-  // Define a function to find a class for a given day and hour
   const findClassForHour = (course: Course, day: string, hour: number) => {
     const lessons = groupedDataByCourse[course.courseName];
     for (const lessonType in lessons) {
@@ -50,8 +48,68 @@ const Timetable: React.FC<TimetableProps> = ({ courses }) => {
     }
   };
 
+  const handleCellClick = (course: Course, day: string, hour: number) => {
+    const newSelectedCells: ClassData[] = [];
+    const lessons = groupedDataByCourse[course.courseName];
+    for (const lessonType in lessons) {
+      const [classData] = lessons[lessonType];
+      const matchingClass = classData.find(
+        data => data.day === day && parseInt(data.startTime) / 100 <= hour && parseInt(data.endTime) / 100 > hour,
+      );
+      if (matchingClass) {
+        newSelectedCells.push(matchingClass);
+      }
+    }
+
+    // Toggle selection: if the cell is already selected, deselect it, otherwise select it
+    if (selectedCells.some(cell => newSelectedCells.some(newCell => cell === newCell))) {
+      setSelectedCells([]);
+    } else {
+      setSelectedCells(newSelectedCells);
+    }
+  };
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      let isOutside = true;
+      selectedCells.forEach(selectedCell => {
+        const cellId = `${selectedCell.day}-${selectedCell.startTime}-${selectedCell.endTime}`;
+        if ((event.target as HTMLElement).id === cellId) {
+          isOutside = false;
+        }
+      });
+
+      if (isOutside) {
+        setSelectedCells([]);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [selectedCells]);
+
+  const lighterColor = (color: string) => {
+    // Convert hex color to RGB
+    const hex = color.replace('#', '');
+    let r = parseInt(hex.substring(0, 2), 16);
+    let g = parseInt(hex.substring(2, 4), 16);
+    let b = parseInt(hex.substring(4, 6), 16);
+
+    // Calculate lighter color (reduce darkness)
+    const amount = 0.3; // Adjust the value to control the lightness
+    r = Math.round(Math.min(255, r + 255 * amount));
+    g = Math.round(Math.min(255, g + 255 * amount));
+    b = Math.round(Math.min(255, b + 255 * amount));
+
+    // Convert back to hex
+    const lighterHex = (r * 65536 + g * 256 + b).toString(16);
+    return `#${lighterHex.padStart(6, '0')}`;
+  };
+
   return (
-    <div style={{ overflowX: 'auto' }}>
+    <div ref={tableRef} style={{ overflowX: 'auto' }}>
       <Table style={{ tableLayout: 'fixed', minWidth: '600px' }}>
         <TableHead>
           <TableRow>
@@ -72,23 +130,24 @@ const Timetable: React.FC<TimetableProps> = ({ courses }) => {
               <TableRow key={hour} style={{ height: '50px' }}>
                 <TableCell style={{ fontSize: '12px' }}>{time}</TableCell>
                 {days.map(day => {
-                  // Check each course for a matching class at the current day and hour
                   const matchingCourse = courses.find(course => findClassForHour(course, day, hour));
                   if (matchingCourse) {
-                    // If a matching course is found, render the class number
                     const matchingClass = findClassForHour(matchingCourse, day, hour);
+                    const isSelected = selectedCells.some(cell => cell === matchingClass);
                     return (
                       <TableCell
                         key={`${day}-${hour}`}
+                        id={`${day}-${matchingClass?.startTime}-${matchingClass?.endTime}`}
+                        onClick={() => handleCellClick(matchingCourse, day, hour)}
                         style={{
-                          backgroundColor: matchingCourse.color, // Set background color to course color
+                          backgroundColor: isSelected ? lighterColor(matchingCourse.color) : matchingCourse.color,
                           width: '100px',
-                          fontSize: '10px', // Adjust font size
+                          fontSize: '10px',
+                          cursor: 'pointer',
                         }}
                       >{`${matchingCourse.courseName} ${matchingClass?.lessonType} ${matchingClass?.classNo}`}</TableCell>
                     );
                   } else {
-                    // If no matching course is found, render an empty cell
                     return <TableCell key={`${day}-${hour}`} style={{ width: '100px', fontSize: '10px' }}></TableCell>;
                   }
                 })}
