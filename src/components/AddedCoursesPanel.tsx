@@ -1,43 +1,42 @@
 import React, { useState } from 'react';
-import { Grid, List, ListItem, ListItemText, IconButton, Box, Popover, Button } from '@mui/material';
+import { Grid, List, ListItem, ListItemText, IconButton, Box, Popover } from '@mui/material';
 import { Delete as DeleteIcon } from '@mui/icons-material';
+import { ChromePicker } from 'react-color'; // Import ChromePicker from react-color
 import type { Course } from '../types/Course';
 
 interface Props {
   courses: Course[];
-  onUpdateCourse: (courses: Course[]) => void; // Updated onDeleteCourse function type
+  onUpdateCourse: (courses: Course[]) => void;
 }
 
 const AddedCoursesPanel: React.FC<Props> = ({ courses, onUpdateCourse }) => {
-  const [colorPickerAnchor, setColorPickerAnchor] = useState<HTMLDivElement | null>(null);
+  const [selectedColor, setSelectedColor] = useState<string>('#ffffff'); // Initial color: white
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [selectedCourseIndex, setSelectedCourseIndex] = useState<number | null>(null);
 
   const handleDelete = (index: number) => {
-    // Pass the original courses array as it's not being updated here
     const newCourses = [...courses];
     newCourses.splice(index, 1);
     onUpdateCourse(newCourses);
   };
 
-  const handleColorPickerClick = (event: React.MouseEvent<HTMLDivElement>, index: number) => {
-    setColorPickerAnchor(event.currentTarget);
+  const handleBoxClick = (event: React.MouseEvent<HTMLDivElement>, index: number) => {
     setSelectedCourseIndex(index);
+    setAnchorEl(event.currentTarget);
   };
 
-  const handleCloseColorPicker = () => {
-    setColorPickerAnchor(null);
+  const handleClosePopover = () => {
+    setAnchorEl(null);
     setSelectedCourseIndex(null);
   };
 
-  const handleChangeColor = (color: string) => {
+  const handleColorChange = (color: { hex: string }) => {
+    setSelectedColor(color.hex);
     if (selectedCourseIndex !== null) {
-      // Update the color of the selected course
       const updatedCourses = [...courses];
-      updatedCourses[selectedCourseIndex].color = color;
-      // Update the state by calling onDeleteCourse function with updatedCourses
+      updatedCourses[selectedCourseIndex].color = color.hex;
       onUpdateCourse(updatedCourses);
     }
-    handleCloseColorPicker();
   };
 
   return (
@@ -45,14 +44,18 @@ const AddedCoursesPanel: React.FC<Props> = ({ courses, onUpdateCourse }) => {
       <Grid container spacing={2}>
         {courses.map((course, index) => (
           <Grid item xs={4} key={index}>
-            {/* Three columns, xs=4 for small screens */}
             <List>
               <ListItem>
-                {/* Added a Box to display the color */}
                 <Box
-                  style={{ backgroundColor: course.color, width: '20px', height: '20px', marginRight: '8px', cursor: 'pointer' }}
-                  onClick={event => handleColorPickerClick(event, index)}
-                ></Box>
+                  style={{
+                    backgroundColor: course.color,
+                    width: '20px',
+                    height: '20px',
+                    marginRight: '8px',
+                    cursor: 'pointer',
+                  }}
+                  onClick={event => handleBoxClick(event, index)}
+                />
                 <ListItemText primary={course.courseName} />
                 <IconButton onClick={() => handleDelete(index)}>
                   <DeleteIcon />
@@ -63,9 +66,9 @@ const AddedCoursesPanel: React.FC<Props> = ({ courses, onUpdateCourse }) => {
         ))}
       </Grid>
       <Popover
-        open={Boolean(colorPickerAnchor)}
-        anchorEl={colorPickerAnchor}
-        onClose={handleCloseColorPicker}
+        open={Boolean(anchorEl)}
+        anchorEl={anchorEl}
+        onClose={handleClosePopover}
         anchorOrigin={{
           vertical: 'bottom',
           horizontal: 'left',
@@ -76,10 +79,7 @@ const AddedCoursesPanel: React.FC<Props> = ({ courses, onUpdateCourse }) => {
         }}
       >
         <Box p={2}>
-          <Button onClick={() => handleChangeColor('red')} style={{ backgroundColor: 'red', marginRight: '8px' }}></Button>
-          <Button onClick={() => handleChangeColor('green')} style={{ backgroundColor: 'green', marginRight: '8px' }}></Button>
-          <Button onClick={() => handleChangeColor('blue')} style={{ backgroundColor: 'blue', marginRight: '8px' }}></Button>
-          {/* Add more buttons for other colors */}
+          <ChromePicker color={selectedColor} onChange={handleColorChange} />
         </Box>
       </Popover>
     </div>
