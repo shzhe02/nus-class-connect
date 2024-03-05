@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
-import { Container, Grid, Box, Button } from '@mui/material';
+import { Container, Grid } from '@mui/material';
 import Timetable from '@/components/Timetable';
 import SearchBar from '@components/SearchBar';
 import AddedCoursesPanel from '@components/AddedCoursesPanel';
 import Footer from '@components/Footer';
+import Header from '@components/Header';
 import type { Course } from '../../types/Course';
 import type { ClassData } from '../../types/ClassData';
 
@@ -98,12 +98,8 @@ const Homepage: React.FC = () => {
   };
 
   return (
-    <Container maxWidth='lg'>
-      <Box marginTop={4} marginBottom={2} textAlign='center'>
-        <Button component={Link} to='/signup' variant='contained' color='primary' style={{ textDecoration: 'none', marginLeft: '10px' }}>
-          Sign Up
-        </Button>
-      </Box>
+    <Container maxWidth={false}>
+      <Header />
       <Grid container spacing={2} justifyContent='center'>
         <Grid item xs={12}>
           <Timetable courses={courses} />
