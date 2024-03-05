@@ -113,9 +113,9 @@ const Timetable: React.FC<TimetableProps> = ({ courses }) => {
       <Table style={{ tableLayout: 'fixed', minWidth: '600px' }}>
         <TableHead>
           <TableRow>
-            <TableCell style={{ width: '60px', fontSize: '12px' }}>Time</TableCell>
+            <TableCell style={{ width: '60px', fontSize: '12px', borderBottom: '0px' }}></TableCell>
             {days.map(day => (
-              <TableCell key={day} style={{ width: '100px', fontSize: '12px' }}>
+              <TableCell key={day} style={{ width: '100px', fontSize: '12px', textAlign: 'center' }}>
                 {day}
               </TableCell>
             ))}
@@ -125,10 +125,17 @@ const Timetable: React.FC<TimetableProps> = ({ courses }) => {
           {[...Array(13)].map((_, index) => {
             const hour = index + 8;
             const time = hour < 12 ? `${hour} AM` : `${hour === 12 ? 12 : hour - 12} PM`;
+            const color = hour % 2 ? '#eeeeee' : 'white';
+            console.log(index);
+            const bottomBorder = index === 12 ? '1px solid rgpa(224, 224, 224)' : '0px';
 
             return (
               <TableRow key={hour} style={{ height: '50px' }}>
-                <TableCell style={{ fontSize: '12px' }}>{time}</TableCell>
+                <TableCell
+                  style={{ fontSize: '12px', borderBottom: '0px', borderRight: '1px solid rgba(224, 224, 224)', textAlign: 'right' }}
+                >
+                  {time}
+                </TableCell>
                 {days.map(day => {
                   const matchingCourse = courses.find(course => findClassForHour(course, day, hour));
                   if (matchingCourse) {
@@ -143,12 +150,25 @@ const Timetable: React.FC<TimetableProps> = ({ courses }) => {
                           backgroundColor: isSelected ? lighterColor(matchingCourse.color) : matchingCourse.color,
                           width: '100px',
                           fontSize: '10px',
+                          borderBottom: bottomBorder,
+                          borderRight: '1px solid rgba(224, 224, 224)',
                           cursor: 'pointer',
                         }}
                       >{`${matchingCourse.courseName} ${matchingClass?.lessonType} ${matchingClass?.classNo}`}</TableCell>
                     );
                   } else {
-                    return <TableCell key={`${day}-${hour}`} style={{ width: '100px', fontSize: '10px' }}></TableCell>;
+                    return (
+                      <TableCell
+                        key={`${day}-${hour}`}
+                        style={{
+                          width: '100px',
+                          fontSize: '10px',
+                          borderBottom: bottomBorder,
+                          borderRight: '1px solid rgba(224, 224, 224)',
+                          backgroundColor: color,
+                        }}
+                      ></TableCell>
+                    );
                   }
                 })}
               </TableRow>
