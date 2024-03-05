@@ -51,18 +51,20 @@ const Homepage: React.FC = () => {
           lessonType: item.lessonType as string,
         }));
 
-        setCourses([...courses, { courseName: course, timetableData: mappedData }]);
+        // Define the default color for the course
+        const defaultColor = '#0000FF'; // Blue color
+
+        // Add the new course with the default color
+        setCourses([...courses, { courseName: course, timetableData: mappedData, color: defaultColor }]);
       })
       .catch(error => {
         console.error('Error fetching timetable data:', error);
       });
   };
 
-  // Function to handle deleting a course
-  const handleDeleteCourse = (index: number) => {
-    const newCourses = [...courses];
-    newCourses.splice(index, 1);
-    setCourses(newCourses);
+  // Function to update the courses array with the updated color
+  const updateCourse = (courses: Course[]) => {
+    setCourses(courses);
   };
 
   // Function to handle searching for courses
@@ -110,7 +112,8 @@ const Homepage: React.FC = () => {
           <SearchBar onSearch={handleSearch} onAddCourse={handleAddCourse} />
         </Grid>
         <Grid item xs={12}>
-          <AddedCoursesPanel courses={courses} onDeleteCourse={handleDeleteCourse} />
+          {/* Pass the updateCourseColor function to the AddedCoursesPanel component */}
+          <AddedCoursesPanel courses={courses} onUpdateCourse={updateCourse} />
         </Grid>
       </Grid>
       <Footer />

@@ -45,21 +45,21 @@ const Timetable: React.FC<TimetableProps> = ({ courses }) => {
         parseInt(chosenClass?.startTime as string) / 100 <= hour &&
         parseInt(chosenClass?.endTime as string) / 100 > hour;
       if (isMatch) {
-        console.log('Match:', chosenClass);
         return chosenClass;
       }
-      console.log('No Match');
     }
   };
 
   return (
-    <div>
-      <Table>
+    <div style={{ overflowX: 'auto' }}>
+      <Table style={{ tableLayout: 'fixed', minWidth: '600px' }}>
         <TableHead>
           <TableRow>
-            <TableCell>Time</TableCell>
+            <TableCell style={{ width: '60px', fontSize: '12px' }}>Time</TableCell>
             {days.map(day => (
-              <TableCell key={day}>{day}</TableCell>
+              <TableCell key={day} style={{ width: '100px', fontSize: '12px' }}>
+                {day}
+              </TableCell>
             ))}
           </TableRow>
         </TableHead>
@@ -69,8 +69,8 @@ const Timetable: React.FC<TimetableProps> = ({ courses }) => {
             const time = hour < 12 ? `${hour} AM` : `${hour === 12 ? 12 : hour - 12} PM`;
 
             return (
-              <TableRow key={hour}>
-                <TableCell>{time}</TableCell>
+              <TableRow key={hour} style={{ height: '50px' }}>
+                <TableCell style={{ fontSize: '12px' }}>{time}</TableCell>
                 {days.map(day => {
                   // Check each course for a matching class at the current day and hour
                   const matchingCourse = courses.find(course => findClassForHour(course, day, hour));
@@ -80,11 +80,16 @@ const Timetable: React.FC<TimetableProps> = ({ courses }) => {
                     return (
                       <TableCell
                         key={`${day}-${hour}`}
+                        style={{
+                          backgroundColor: matchingCourse.color, // Set background color to course color
+                          width: '100px',
+                          fontSize: '10px', // Adjust font size
+                        }}
                       >{`${matchingCourse.courseName} ${matchingClass?.lessonType} ${matchingClass?.classNo}`}</TableCell>
                     );
                   } else {
                     // If no matching course is found, render an empty cell
-                    return <TableCell key={`${day}-${hour}`}></TableCell>;
+                    return <TableCell key={`${day}-${hour}`} style={{ width: '100px', fontSize: '10px' }}></TableCell>;
                   }
                 })}
               </TableRow>
