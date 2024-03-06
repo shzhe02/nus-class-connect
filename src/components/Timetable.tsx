@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Table, TableHead, TableBody, TableRow, TableCell } from '@mui/material';
 import type { Course } from '../types/Course';
 import type { ClassData } from '../types/ClassData';
+import CourseCard from './CourseCard';
 
 interface TimetableProps {
   courses: Course[];
@@ -33,19 +34,34 @@ const Timetable: React.FC<TimetableProps> = ({ courses }) => {
     groupedDataByCourse[course.courseName] = groupClassDataByLessonType(course.timetableData);
   });
 
-  const findClassForHour = (course: Course, day: string, hour: number) => {
-    const lessons = groupedDataByCourse[course.courseName];
-    for (const lessonType in lessons) {
-      const [classData, classNo] = lessons[lessonType];
-      const chosenClass = classData.find(data => data.classNo === classNo);
-      const isMatch =
-        chosenClass?.day === day &&
-        parseInt(chosenClass?.startTime as string) / 100 <= hour &&
-        parseInt(chosenClass?.endTime as string) / 100 > hour;
-      if (isMatch) {
-        return chosenClass;
+  const findClassesForHour = (courses: Course[], day: string, hour: number) => {
+    const classes: ClassData[] = [];
+    courses.forEach(course => {
+      const courseClasses = groupedDataByCourse[course.courseName];
+      for (const classType in courseClasses) {
+        const [classData, classNo] = courseClasses[classType];
+        classData
+          .filter(e => e.classNo === classNo)
+          .forEach(data => {
+            if (data.day === day && parseInt(data.startTime) / 100 <= hour && parseInt(data.endTime) / 100 > hour) {
+              classes.push(data);
+            }
+          });
       }
-    }
+    });
+    return classes;
+    // const lessons = groupedDataByCourse[courses.courseName];
+    // for (const lessonType in lessons) {
+    //   const [classData, classNo] = lessons[lessonType];
+    //   const chosenClass = classData.find(data => data.classNo === classNo);
+    //   const isMatch =
+    //     chosenClass?.day === day &&
+    //     parseInt(chosenClass?.startTime as string) / 100 <= hour &&
+    //     parseInt(chosenClass?.endTime as string) / 100 > hour;
+    //   if (isMatch) {
+    //     return chosenClass;
+    //   }
+    // }
   };
 
   const handleCellClick = (course: Course, day: string, hour: number) => {
@@ -126,35 +142,41 @@ const Timetable: React.FC<TimetableProps> = ({ courses }) => {
             const hour = index + 8;
             const time = hour < 12 ? `${hour} AM` : `${hour === 12 ? 12 : hour - 12} PM`;
             const color = hour % 2 ? '#eeeeee' : 'white';
-            console.log(index);
             const bottomBorder = index === 12 ? '1px solid rgpa(224, 224, 224)' : '0px';
 
             return (
               <TableRow key={hour} style={{ height: '50px' }}>
                 <TableCell
-                  style={{ fontSize: '12px', borderBottom: '0px', borderRight: '1px solid rgba(224, 224, 224)', textAlign: 'right' }}
+                  style={{
+                    fontSize: '12px',
+                    borderBottom: '0px',
+                    borderRight: '1px solid rgba(224, 224, 224)',
+                    textAlign: 'right',
+                    paddingRight: '10px',
+                  }}
                 >
                   {time}
                 </TableCell>
                 {days.map(day => {
-                  const matchingCourse = courses.find(course => findClassForHour(course, day, hour));
-                  if (matchingCourse) {
-                    const matchingClass = findClassForHour(matchingCourse, day, hour);
-                    const isSelected = selectedCells.some(cell => cell === matchingClass);
+                  const matchingClasses = findClassesForHour(courses, day, hour);
+                  if (matchingClasses.length > 0) {
                     return (
                       <TableCell
                         key={`${day}-${hour}`}
-                        id={`${day}-${matchingClass?.startTime}-${matchingClass?.endTime}`}
-                        onClick={() => handleCellClick(matchingCourse, day, hour)}
                         style={{
-                          backgroundColor: isSelected ? lighterColor(matchingCourse.color) : matchingCourse.color,
+                          backgroundColor: color,
+                          position: 'relative',
                           width: '100px',
                           fontSize: '10px',
                           borderBottom: bottomBorder,
                           borderRight: '1px solid rgba(224, 224, 224)',
                           cursor: 'pointer',
+                          padding: '0px',
                         }}
-                      >{`${matchingCourse.courseName} ${matchingClass?.lessonType} ${matchingClass?.classNo}`}</TableCell>
+                      >
+                        {/* {`${matchingCourses[0].courseName} ${matchingClass?.lessonType} ${matchingClass?.classNo}`} */}
+                        <CourseCard courses={matchingClasses} />
+                      </TableCell>
                     );
                   } else {
                     return (
