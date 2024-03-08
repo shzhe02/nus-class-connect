@@ -54,8 +54,17 @@ const Homepage: React.FC = () => {
         // Define the default color for the course
         const defaultColor = '#0000FF'; // Blue color
 
-        // Add the new course with the default color
-        setCourses([...courses, { courseName: course, timetableData: mappedData, color: defaultColor }]);
+        // Object to store initial indexes for each lessonType
+        const initialIndexes: { [key: string]: string } = {};
+
+        // Iterate through the mappedData to calculate initial indexes
+        mappedData.forEach(item => {
+          // If lessonType exists in initialIndexes, increment its index, otherwise set it to 0
+          initialIndexes[item.lessonType] = initialIndexes[item.lessonType] ? initialIndexes[item.lessonType] : item.classNo;
+        });
+
+        // Add the new course with the default color and initial indexes
+        setCourses([...courses, { courseName: course, timetableData: mappedData, color: defaultColor, lessonType: initialIndexes }]);
       })
       .catch(error => {
         console.error('Error fetching timetable data:', error);
