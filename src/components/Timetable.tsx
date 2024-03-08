@@ -175,7 +175,17 @@ const ClassCards: React.FC<ClassCardsProps> = ({ classes, startTime, rows }) => 
                 let lastEnd = 0;
 
                 return (
-                  <TableCell key={i} style={{ flexGrow: 1, display: 'flex', flexDirection: 'column', padding: '0px', flexBasis: '0%' }}>
+                  <TableCell
+                    key={i}
+                    style={{
+                      flexGrow: 1,
+                      display: 'flex',
+                      flexDirection: 'column',
+                      padding: '0px',
+                      flexBasis: '0%',
+                      overflow: 'scroll',
+                    }}
+                  >
                     {clusters.map((cluster, j) => {
                       const clusterStart = +cluster[0][0].startTime / 100;
                       const clusterEnd = Math.min(...cluster.map(col => +col[col.length - 1].endTime / 100));
