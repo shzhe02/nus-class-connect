@@ -117,7 +117,15 @@ interface ClassCardsProps {
 
 const ClassCards: React.FC<ClassCardsProps> = ({ classes, startTime, rows }) => {
   const classesByDay: Map<string, ClassData[]> = new Map(['MON', 'TUE', 'WED', 'THU', 'FRI'].map(day => [day, []]));
-  classes.forEach(c => classesByDay.get(c.day)!.push(c));
+  classes.forEach(c => {
+    const dayClasses = classesByDay.get(c.day);
+    if (dayClasses) {
+      dayClasses.push(c);
+    } else {
+      // If the dayClasses is undefined, initialize it with an empty array and push the class c into it
+      classesByDay.set(c.day, [c]);
+    }
+  });
 
   return (
     <div style={{ position: 'absolute', top: 0, left: 0, display: 'flex', height: '100%', width: '100%', flexDirection: 'column' }}>
