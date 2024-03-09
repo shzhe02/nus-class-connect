@@ -53,6 +53,7 @@ const AddedCoursesPanel: React.FC<Props> = ({ courses, onUpdateCourse }) => {
                     height: '20px',
                     marginRight: '8px',
                     cursor: 'pointer',
+                    borderRadius: '50%', // Make the box circular
                   }}
                   onClick={event => handleBoxClick(event, index)}
                 />
