@@ -28,6 +28,12 @@ const Timetable: React.FC<TimetableProps> = ({ courses }) => {
   // Concat the chosen class together
   const classes = chosenClasses.map(course => course.timetableData).reduce((acc, val) => acc.concat(val), []);
 
+  // Concat the chosen class's color together
+  const classesColor = chosenClasses.flatMap(course => {
+    // Create an array with the length of timetableData for each course, filled with the course's color
+    return Array(course.timetableData.length).fill(course.color);
+  });
+
   // start and end times of the schedule. Default is 10AM-4PM
   const startTime = Math.ceil(Math.min(...classes.map(c => +c.startTime), 1000)) / 100;
   const endTime = Math.floor(Math.max(...classes.map(c => +c.endTime), 1600)) / 100;
@@ -38,9 +44,10 @@ const Timetable: React.FC<TimetableProps> = ({ courses }) => {
     <div style={{ display: 'flex', margin: '10px', height: 800, width: '99%' }}>
       <TimeColumn startTime={startTime} rows={rows} />
       <div style={{ flexGrow: 1, position: 'relative' }}>
-        {chosenClasses.map((course, index) => (
+        <ClassCards classes={classes} startTime={startTime} rows={rows} color={classesColor} />
+        {/* {chosenClasses.map((course, index) => (
           <ClassCards key={index} classes={course.timetableData} startTime={startTime} rows={rows} color={course.color} />
-        ))}
+        ))} */}
         <Schedule rows={rows} />
       </div>
     </div>

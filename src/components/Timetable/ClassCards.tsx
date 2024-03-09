@@ -6,18 +6,18 @@ interface ClassCardsProps {
   classes: ClassData[];
   startTime: number;
   rows: number;
-  color: string;
+  color: string[];
 }
 
 const ClassCards: React.FC<ClassCardsProps> = ({ classes, startTime, rows, color }) => {
-  const classesByDay: Map<string, ClassData[]> = new Map(['MON', 'TUE', 'WED', 'THU', 'FRI'].map(day => [day, []]));
-  classes.forEach(c => {
+  const classesByDay: Map<string, [ClassData, string][]> = new Map(['MON', 'TUE', 'WED', 'THU', 'FRI'].map(day => [day, []]));
+  classes.forEach((c, idx) => {
     const dayClasses = classesByDay.get(c.day);
     if (dayClasses) {
-      dayClasses.push(c);
+      dayClasses.push([c, color[idx]]);
     } else {
       // If the dayClasses is undefined, initialize it with an empty array and push the class c into it
-      classesByDay.set(c.day, [c]);
+      classesByDay.set(c.day, [[c, color[idx]]]);
     }
   });
 
@@ -44,9 +44,9 @@ const ClassCards: React.FC<ClassCardsProps> = ({ classes, startTime, rows, color
             <TableRow style={{ display: 'flex', flexGrow: 1, flexDirection: 'row' }}>
               {Array.from(classesByDay.values()).map((classes, i) => {
                 // Turn into clusters of overlapping classes
-                const clusters: ClassData[][][] = [];
-                let currCluster: ClassData[][] = [];
-                classes.sort((a, b) => +a.startTime - +b.startTime + +a.endTime - +b.endTime);
+                const clusters: [ClassData, string][][][] = [];
+                let currCluster: [ClassData, string][][] = [];
+                classes.sort((a, b) => +a[0].startTime - +b[0].startTime + +a[0].endTime - +b[0].endTime);
 
                 classes.forEach(c => {
                   // No existing cluster exists, so create one
@@ -58,7 +58,7 @@ const ClassCards: React.FC<ClassCardsProps> = ({ classes, startTime, rows, color
                   const lastElems = currCluster.map(col => col[col.length - 1]);
                   // Case where all elements in existing cluster end before the start of the current class
                   // => make new cluster
-                  if (lastElems.filter(lastInCol => +lastInCol.endTime > +c.startTime).length === 0) {
+                  if (lastElems.filter(lastInCol => +lastInCol[0].endTime > +c[0].startTime).length === 0) {
                     clusters.push(currCluster);
                     currCluster = [[c]];
                     return;
@@ -67,7 +67,7 @@ const ClassCards: React.FC<ClassCardsProps> = ({ classes, startTime, rows, color
                   // (Specifically when an earlier column is free)
                   // => Join cluster
                   for (let k = 0; k < lastElems.length; k++) {
-                    if (+lastElems[k].endTime <= +c.startTime) {
+                    if (+lastElems[k][0].endTime <= +c[0].startTime) {
                       currCluster[k].push(c);
                       return;
                     }
@@ -95,8 +95,8 @@ const ClassCards: React.FC<ClassCardsProps> = ({ classes, startTime, rows, color
                     }}
                   >
                     {clusters.map((cluster, j) => {
-                      const clusterStart = +cluster[0][0].startTime / 100;
-                      const clusterEnd = Math.min(...cluster.map(col => +col[col.length - 1].endTime / 100));
+                      const clusterStart = +cluster[0][0][0].startTime / 100;
+                      const clusterEnd = Math.min(...cluster.map(col => +col[col.length - 1][0].endTime / 100));
 
                       const absoluteStart = clusterStart - startTime;
                       const paddingAbove = absoluteStart - lastEnd;
@@ -120,10 +120,9 @@ const ClassCards: React.FC<ClassCardsProps> = ({ classes, startTime, rows, color
                                   }}
                                 >
                                   {col.map((c, p) => {
-                                    const classStart = +c.startTime / 100;
+                                    const classStart = +c[0].startTime / 100;
                                     const paddingAbove = classStart - clusterStart;
-
-                                    const classEnd = +c.endTime / 100;
+                                    const classEnd = +c[0].endTime / 100;
                                     lastClassEnd = classEnd - clusterStart;
                                     return (
                                       <React.Fragment key={p}>
@@ -131,18 +130,18 @@ const ClassCards: React.FC<ClassCardsProps> = ({ classes, startTime, rows, color
                                         <div
                                           style={{
                                             flexGrow: classEnd - classStart,
-                                            backgroundColor: color,
-                                            color: getTextColor(color),
+                                            backgroundColor: c[1],
+                                            color: getTextColor(c[1]),
                                             borderRadius: '4px',
                                             margin: '4px',
                                             padding: '4px',
                                           }}
                                         >
-                                          <div style={{ flex: 1 }}>{c.courseName}</div>
+                                          <div style={{ flex: 1 }}>{c[0].courseName}</div>
                                           <div style={{ flex: 1 }}>
-                                            {c.lessonType} [{c.classNo}]
+                                            {c[0].lessonType} [{c[0].classNo}]
                                           </div>
-                                          <div style={{ flex: 1 }}>{c.venue}</div>
+                                          <div style={{ flex: 1 }}>{c[0].venue}</div>
                                         </div>
                                       </React.Fragment>
                                     );
