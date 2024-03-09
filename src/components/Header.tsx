@@ -30,14 +30,13 @@ const Header: React.FC = () => {
                   NUS-CLASS-CONNECT
                 </StyledTypography>
               </Grid>
-              <Grid item>
-                {/* Wrap the button inside Link component */}
+              {/* <Grid item>
                 <Link to='/signup' style={{ textDecoration: 'none' }}>
                   <StyledSignUpButton color='inherit' variant='outlined'>
                     Sign Up
                   </StyledSignUpButton>
                 </Link>
-              </Grid>
+              </Grid> */}
             </Grid>
           </Container>
         </StyledToolbar>
