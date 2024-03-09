@@ -6,9 +6,10 @@ interface ClassCardsProps {
   classes: ClassData[];
   startTime: number;
   rows: number;
+  color: string;
 }
 
-const ClassCards: React.FC<ClassCardsProps> = ({ classes, startTime, rows }) => {
+const ClassCards: React.FC<ClassCardsProps> = ({ classes, startTime, rows, color }) => {
   const classesByDay: Map<string, ClassData[]> = new Map(['MON', 'TUE', 'WED', 'THU', 'FRI'].map(day => [day, []]));
   classes.forEach(c => {
     const dayClasses = classesByDay.get(c.day);
@@ -19,6 +20,20 @@ const ClassCards: React.FC<ClassCardsProps> = ({ classes, startTime, rows }) => 
       classesByDay.set(c.day, [c]);
     }
   });
+
+  // Function to determine text color based on background color brightness
+  const getTextColor = (bgColor: string): string => {
+    // Convert hex color to RGB
+    const r = parseInt(bgColor.substring(1, 3), 16);
+    const g = parseInt(bgColor.substring(3, 5), 16);
+    const b = parseInt(bgColor.substring(5, 7), 16);
+
+    // Calculate brightness using the YIQ formula
+    const brightness = (r * 299 + g * 587 + b * 114) / 1000;
+
+    // Use black text for bright background, and white text for dark background
+    return brightness > 125 ? '#000000' : '#ffffff';
+  };
 
   return (
     <div style={{ position: 'absolute', top: 0, left: 0, display: 'flex', height: '100%', width: '100%', flexDirection: 'column' }}>
@@ -116,13 +131,18 @@ const ClassCards: React.FC<ClassCardsProps> = ({ classes, startTime, rows }) => 
                                         <div
                                           style={{
                                             flexGrow: classEnd - classStart,
-                                            backgroundColor: 'orange',
+                                            backgroundColor: color,
+                                            color: getTextColor(color),
                                             borderRadius: '4px',
                                             margin: '4px',
                                             padding: '4px',
                                           }}
                                         >
-                                          {c.lessonType}
+                                          <div style={{ flex: 1 }}>{c.courseName}</div>
+                                          <div style={{ flex: 1 }}>
+                                            {c.lessonType} [{c.classNo}]
+                                          </div>
+                                          <div style={{ flex: 1 }}>{c.venue}</div>
                                         </div>
                                       </React.Fragment>
                                     );

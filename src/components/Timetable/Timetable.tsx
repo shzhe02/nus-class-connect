@@ -38,7 +38,9 @@ const Timetable: React.FC<TimetableProps> = ({ courses }) => {
     <div style={{ display: 'flex', margin: '10px', height: 800, width: '99%' }}>
       <TimeColumn startTime={startTime} rows={rows} />
       <div style={{ flexGrow: 1, position: 'relative' }}>
-        <ClassCards classes={classes} startTime={startTime} rows={rows} />
+        {chosenClasses.map((course, index) => (
+          <ClassCards key={index} classes={course.timetableData} startTime={startTime} rows={rows} color={course.color} />
+        ))}
         <Schedule rows={rows} />
       </div>
     </div>

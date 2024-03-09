@@ -1,4 +1,5 @@
 interface ClassData {
+  courseName: string;
   classNo: string;
   startTime: string;
   endTime: string;

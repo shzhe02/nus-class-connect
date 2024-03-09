@@ -42,6 +42,7 @@ const Homepage: React.FC = () => {
       .then(data => {
         // Map the fetched data to match the structure of the timetableData
         const mappedData: ClassData[] = (data as Record<string, unknown>[]).map(item => ({
+          courseName: course as string,
           classNo: item.classNo as string,
           startTime: item.startTime as string,
           endTime: item.endTime as string,
