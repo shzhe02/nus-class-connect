@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Container, Grid } from '@mui/material';
-import Timetable from '@/components/Timetable';
+import Timetable from '@/components/Timetable/Timetable';
 import SearchBar from '@components/SearchBar';
 import AddedCoursesPanel from '@components/AddedCoursesPanel';
 import Footer from '@components/Footer';
