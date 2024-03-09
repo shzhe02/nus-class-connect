@@ -35,6 +35,14 @@ const Homepage: React.FC = () => {
     }
   }
 
+  function shortenClassType(fullTypename: string): string {
+    const words = fullTypename.split(' ');
+    if (words.length === 1) {
+      return words[0].substring(0, 3).toUpperCase();
+    }
+    return (words[0][0] + words[1].substring(0, 3)).toUpperCase();
+  }
+
   // Function to handle adding a new course
   const handleAddCourse = (course: string) => {
     // Fetch timetable data for the added course and update the courses state
@@ -49,7 +57,7 @@ const Homepage: React.FC = () => {
           weeks: item.weeks as number[],
           venue: item.venue as string,
           day: abbreviateDay(item.day as string),
-          lessonType: item.lessonType as string,
+          lessonType: shortenClassType(item.lessonType as string),
         }));
 
         // Define the default color for the course

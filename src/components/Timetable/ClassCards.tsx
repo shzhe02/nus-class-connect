@@ -137,11 +137,10 @@ const ClassCards: React.FC<ClassCardsProps> = ({ classes, startTime, rows, color
                                             padding: '4px',
                                           }}
                                         >
-                                          <div style={{ flex: 1 }}>{c[0].courseName}</div>
-                                          <div style={{ flex: 1 }}>
-                                            {c[0].lessonType} [{c[0].classNo}]
-                                          </div>
-                                          <div style={{ flex: 1 }}>{c[0].venue}</div>
+                                          <strong>{c[0].courseName.split(' ')[0]}</strong>
+                                          <br />
+                                          {c[0].lessonType} [{c[0].classNo}]<br />
+                                          {c[0].venue}
                                         </div>
                                       </React.Fragment>
                                     );
