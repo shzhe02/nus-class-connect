@@ -41,13 +41,10 @@ const Timetable: React.FC<TimetableProps> = ({ courses }) => {
   const rows = endTime - startTime;
 
   return (
-    <div style={{ display: 'flex', margin: '10px', height: 800, width: '99%' }}>
+    <div style={{ display: 'flex', margin: '10px', height: `${rows * 3 * 2}em`, width: '99%' }}>
       <TimeColumn startTime={startTime} rows={rows} />
       <div style={{ flexGrow: 1, position: 'relative' }}>
         <ClassCards classes={classes} startTime={startTime} rows={rows} color={classesColor} />
-        {/* {chosenClasses.map((course, index) => (
-          <ClassCards key={index} classes={course.timetableData} startTime={startTime} rows={rows} color={course.color} />
-        ))} */}
         <Schedule rows={rows} />
       </div>
     </div>
